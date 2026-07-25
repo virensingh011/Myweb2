@@ -1,0 +1,763 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Viren Singh | Portfolio</title><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="alternate icon" href="assets/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+/* =========================================================================
+   VIREN SINGH — PORTFOLIO
+   Premium hyper-animated build. White → black scroll-linked color system,
+   a fixed 3D "orbital gem" centerpiece, custom magnetic cursor, tilting
+   glass cards and a scroll-driven focus/blur veil.
+   All colors below are DEFAULTS — the real values are re-written every
+   animation frame by script.js as you scroll (see the --bg/--ink/etc.
+   custom properties). This file defines the *shape*, script.js drives
+   the *state*.
+   ========================================================================= */
+
+:root{
+  /* live-updated by script.js (scrollColorSystem) */
+  --bg:#faf8f3;
+  --bg2:#f2efe7;
+  --ink:#0c0c0c;
+  --muted:#5a5850;
+  --muted-2:#8b8878;
+  --glass:rgba(10,10,8,.045);
+  --glass-hover:rgba(10,10,8,.08);
+  --border:rgba(10,10,8,.12);
+  --border-hover:rgba(10,10,8,.28);
+  --accent-a:#0c0c0c;      /* graphite → gold */
+  --accent-b:#8a6a2f;      /* secondary accent → neon cyan */
+  --grad:linear-gradient(100deg,var(--accent-a),var(--accent-b) 65%);
+  --veil-blur:0px;
+  --veil-opacity:0;
+
+  /* static tokens */
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Manrope",Arial,sans-serif;
+  --mono:"DM Mono",monospace;
+  --ease:cubic-bezier(.16,.84,.32,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  overflow-x:hidden;
+  transition:background .05s linear; /* smooths the per-frame var updates */
+}
+a{color:inherit}
+::selection{background:var(--accent-b);color:#fff}
+:focus-visible{outline:2px solid var(--accent-b);outline-offset:3px;border-radius:3px}
+.skip-link{position:absolute;left:-999px;top:auto;background:var(--ink);color:var(--bg);font-weight:800;font-size:12px;padding:10px 14px;border-radius:0 0 6px 0;z-index:80}
+.skip-link:focus{left:0;top:0}
+
+/* hide native cursor once our custom cursor is active (fine-pointer only) */
+html.has-custom-cursor, html.has-custom-cursor *{cursor:none !important}
+
+/* =========================================================================
+   1. SCROLL PROGRESS BAR
+   ========================================================================= */
+#progressBar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:90;transition:width .1s linear}
+
+/* =========================================================================
+   2. HEADER — floating glass pill, color-syncs with the page
+   ========================================================================= */
+.site-header{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:22px;padding:9px 10px 9px 22px;background:var(--glass);backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--border);border-radius:999px;transition:background .3s ease,box-shadow .3s ease,border-color .3s ease}
+.site-header.scrolled{box-shadow:0 12px 34px -14px rgba(0,0,0,.25)}
+.brand{font-size:18px;font-weight:800;color:var(--ink);text-decoration:none;letter-spacing:-.02em;transition:color .3s ease}
+.brand span{color:var(--accent-b)}
+nav{display:flex;gap:20px}
+nav a{position:relative;padding:4px 0;font-size:12px;font-weight:700;text-decoration:none;color:var(--muted);letter-spacing:.01em;transition:color .2s ease}
+nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:2px;border-radius:2px;background:var(--grad);transition:right .25s var(--ease)}
+nav a:hover,nav a:focus-visible,nav a.active{color:var(--ink)}
+nav a:hover::after,nav a:focus-visible::after,nav a.active::after{right:0}
+.download{font-size:11px;font-weight:800;text-decoration:none;letter-spacing:.02em;padding:9px 16px;border-radius:999px;background:var(--grad);color:var(--bg);position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.download:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 14px 28px -12px var(--accent-b)}
+.nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:999px;width:34px;height:34px;font-size:15px;cursor:pointer;color:var(--ink)}
+
+/* =========================================================================
+   3. CUSTOM CURSOR — core dot + trailing aura ring + particle trail
+   Driven entirely in script.js (section: CURSOR SYSTEM). Hidden on touch.
+   ========================================================================= */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:200;transform:translate(-50%,-50%);will-change:transform}
+.cursor-dot{width:8px;height:8px;border-radius:50%;background:var(--ink);transition:background .25s ease,width .2s var(--ease),height .2s var(--ease)}
+.cursor-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--accent-b);opacity:.7;transition:width .3s var(--ease),height .3s var(--ease),border-color .25s ease,opacity .25s ease,background .25s ease}
+.cursor-ring.magnetic{width:64px;height:64px;background:rgba(138,106,47,.08);border-color:transparent;opacity:1}
+.cursor-ring.text{width:6px;height:26px;border-radius:3px}
+html.has-custom-cursor .cursor-dot,html.has-custom-cursor .cursor-ring{display:block}
+.cursor-dot,.cursor-ring{display:none}
+.cursor-trail{position:fixed;top:0;left:0;z-index:199;pointer-events:none}
+.trail-particle{position:fixed;top:0;left:0;width:4px;height:4px;border-radius:50%;background:var(--accent-b);pointer-events:none;z-index:199;will-change:transform,opacity}
+
+/* =========================================================================
+   4. THE GEM — fixed 3D centerpiece. Structure only here; script.js drives
+   rotateX/rotateY/scale/translate every frame based on scroll + pointer.
+   .gem-stage      fixed anchor, repositioned (center → corner) on scroll
+   .gem-float      idle bob (pure CSS keyframe, always running)
+   .gem-spin       scroll+pointer driven 3D rotation (JS)
+   .gem-prism      the actual faceted geometry (6 side facets + 2 caps)
+   ========================================================================= */
+.gem-stage{
+  position:fixed;top:0;left:0;z-index:4;pointer-events:none;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.gem-orbits{position:absolute;top:0;left:0;transform:translate(-50%,-50%);transform-style:preserve-3d}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid var(--border);transform:translate(-50%,-50%) rotateX(72deg);opacity:.55}
+.orbit-ring.r1{width:340px;height:340px;animation:orbitSpin 22s linear infinite}
+.orbit-ring.r2{width:460px;height:460px;border-style:dashed;transform:translate(-50%,-50%) rotateX(72deg) rotateZ(40deg);animation:orbitSpin 34s linear infinite reverse;opacity:.35}
+@keyframes orbitSpin{to{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(360deg)}}
+.orbit-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent-b);box-shadow:0 0 12px 2px var(--accent-b);top:50%;left:50%;transform-origin:170px 0}
+.orbit-dot.d1{animation:orbitTravel 22s linear infinite}
+.orbit-dot.d2{animation:orbitTravel 34s linear infinite reverse;transform-origin:230px 0}
+@keyframes orbitTravel{from{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(0deg) translateX(170px)}to{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(360deg) translateX(170px)}}
+
+.gem-float{position:absolute;top:0;left:0;transform-style:preserve-3d;animation:gemBob 6s ease-in-out infinite}
+@keyframes gemBob{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-14px)}}
+
+.gem-spin{position:relative;transform-style:preserve-3d;will-change:transform;perspective:900px}
+.gem-prism{position:relative;width:0;height:0;transform-style:preserve-3d}
+.facet{
+  position:absolute;width:132px;height:114px;left:-66px;
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(180deg,rgba(255,255,255,.62),var(--accent-b) 150%);
+  opacity:.88;
+  box-shadow:inset 0 0 24px rgba(255,255,255,.18);
+}
+.facet.top{
+  top:-114px;
+  clip-path:polygon(50% 0%,0% 100%,100% 100%);      /* triangle pointing up: point = apex, base = girdle */
+  transform-origin:50% 100%;                          /* pivot at the girdle (base) edge */
+  transform:rotateY(calc(var(--i) * 90deg)) translateZ(84px) rotateX(-52deg);
+}
+.facet.bottom{
+  top:0;
+  clip-path:polygon(50% 100%,0% 0%,100% 0%);          /* triangle pointing down: point = apex, base = girdle */
+  transform-origin:50% 0%;                            /* pivot at the girdle (base) edge */
+  transform:rotateY(calc(var(--i) * 90deg)) translateZ(84px) rotateX(52deg);
+  background:linear-gradient(0deg,rgba(255,255,255,.5),var(--accent-a) 150%);
+}
+.facet:nth-child(odd){opacity:1;filter:brightness(1.16)}
+.gem-glow{position:absolute;top:50%;left:50%;width:260px;height:260px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,var(--accent-b),transparent 68%);filter:blur(40px);opacity:.55;z-index:-1;pointer-events:none}
+
+/* =========================================================================
+   5. FOCUS / BLUR VEIL — a translucent, blurring layer that intensifies
+   during the white→black transition zone, like a camera racking focus.
+   Opacity + blur radius are set every frame in script.js.
+   ========================================================================= */
+.scene-veil{
+  position:fixed;inset:0;z-index:6;pointer-events:none;
+  backdrop-filter:blur(var(--veil-blur));
+  background:rgba(20,18,14,var(--veil-opacity));
+  transition:background .08s linear;
+}
+
+/* ambient ember/glow blobs kept subtle, color-synced */
+.glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.4;pointer-events:none;z-index:0;will-change:transform;background:radial-gradient(circle,var(--accent-b),transparent 70%)}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.15)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.1)}}
+.glow.d1{animation:drift1 16s ease-in-out infinite}
+.glow.d2{animation:drift2 19s ease-in-out infinite}
+
+/* =========================================================================
+   6. HERO
+   ========================================================================= */
+.hero{padding:170px 9vw 140px;min-height:640px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.hero>.reveal{max-width:620px}
+.hero-caption{position:relative;z-index:1;margin:56px 0 0;font:500 10px var(--mono);letter-spacing:.08em;color:var(--muted-2)}
+.hero-caption span{color:var(--accent-b)}
+.hero>*:not(.glow){position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:8px;font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--glass);border:1px solid var(--border);padding:6px 14px;border-radius:999px;margin-bottom:22px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent-b);animation:dotPulse 2s ease-out infinite}
+@keyframes dotPulse{0%{box-shadow:0 0 0 0 rgba(138,106,47,.5)}70%{box-shadow:0 0 0 8px rgba(138,106,47,0)}100%{box-shadow:0 0 0 0 rgba(138,106,47,0)}}
+.eyebrow{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin:0 0 12px}
+.hero h1,.section h2,.contact h2{font-size:clamp(42px,6vw,80px);line-height:1;letter-spacing:-.05em;margin:0;font-weight:800;color:var(--ink)}
+.hero em{font-family:var(--serif);font-weight:500;font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:540px;font-size:16px;line-height:1.7;color:var(--muted);margin-top:18px}
+.actions,.quick{display:flex;gap:12px;flex-wrap:wrap}
+.actions{margin-top:30px}
+
+/* buttons: 3D lift + glow + magnetic-ready */
+.button{font-size:12px;font-weight:800;text-decoration:none;padding:14px 22px;border-radius:999px;display:inline-block;transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .2s ease;position:relative;overflow:hidden;transform-style:preserve-3d}
+.primary{background:var(--grad);color:var(--bg)}
+.primary:hover{box-shadow:0 16px 34px -12px var(--accent-b)}
+.secondary{border:1px solid var(--border);color:var(--ink);background:var(--glass)}
+.secondary:hover{border-color:var(--border-hover);background:var(--glass-hover)}
+.ripple{position:absolute;width:10px;height:10px;margin:-5px;border-radius:50%;background:rgba(255,255,255,.6);transform:scale(0);animation:rippleOut .6s ease-out;pointer-events:none}
+@keyframes rippleOut{to{transform:scale(20);opacity:0}}
+
+.stats{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
+.stats>div{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:14px 20px;transition:background .3s,border-color .3s}
+.stats strong{display:block;font:800 26px var(--mono);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats span{font-size:11px;color:var(--muted)}
+
+/* =========================================================================
+   7. MARQUEE
+   ========================================================================= */
+.marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0;overflow:hidden;position:relative;z-index:1}
+.marquee{display:flex;gap:36px;width:max-content;animation:scrollX 32s linear infinite}
+.marquee span{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.marquee span::after{content:"•";margin-left:36px;color:var(--accent-b)}
+@keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* =========================================================================
+   8. SCROLL REVEAL (staggered, blur-in for a premium "focus pull" feel)
+   ========================================================================= */
+.reveal{opacity:0;transform:translateY(28px) scale(.97);filter:blur(6px);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease);transition-delay:var(--d,0ms)}
+.reveal.in-view{opacity:1;transform:none;filter:blur(0)}
+
+/* =========================================================================
+   9. SECTIONS + GLASS CARDS (tilt handled in JS)
+   ========================================================================= */
+.section,.contact{padding:100px 9vw;position:relative;overflow:hidden}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:36px;position:relative;z-index:1}
+.section-head h2,.contact h2{font-size:clamp(32px,4vw,52px)}
+.section-head>p{max-width:270px;margin:0;font-size:12px;line-height:1.6;color:var(--muted)}
+.section>*:not(.glow){position:relative;z-index:1}
+
+.research-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.research-item,.project-card,.achievement,.link-panel>div{
+  position:relative;overflow:hidden;
+  background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:18px;
+  transition:border-color .25s ease,box-shadow .3s ease,background .25s ease;
+  transform-style:preserve-3d;will-change:transform;
+}
+/* shine sweep — a soft highlight that follows the pointer, set via --mx/--my in JS */
+.research-item::before,.project-card::before,.achievement::before,.link-panel>div::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s ease;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.35),transparent 60%);
+  mix-blend-mode:overlay;
+}
+.research-item:hover::before,.project-card:hover::before,.achievement:hover::before,.link-panel>div:hover::before{opacity:1}
+
+.research-item{display:grid;grid-template-columns:24px 1fr;gap:12px;min-height:175px;padding:22px;cursor:pointer}
+.research-item:hover,.research-item:focus-visible{border-color:var(--accent-b);background:var(--glass-hover);box-shadow:0 26px 50px -26px var(--accent-b)}
+.research-item small{color:var(--accent-b);font:500 10px var(--mono)}
+.research-item h3{margin:0 0 7px;font-size:20px;letter-spacing:-.03em}
+.research-item p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.quick{margin-top:13px}
+.quick a{font-size:11px;font-weight:800;color:var(--accent-b);text-decoration:none;position:relative}
+.quick a:hover{text-decoration:underline}
+
+.project-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.project-card,.achievement{padding:22px;display:flex;flex-direction:column;min-height:205px;cursor:pointer}
+.project-card:hover,.achievement:hover,.project-card:focus-visible,.achievement:focus-visible{border-color:var(--accent-a);background:var(--glass-hover);box-shadow:0 26px 50px -26px var(--accent-a)}
+.project-card h3,.achievement h3{font-size:21px;margin:0 0 9px;letter-spacing:-.03em}
+.project-card p:not(.eyebrow),.achievement p:not(.eyebrow){font-size:12px;line-height:1.55;color:var(--muted);margin:0}
+.project-card span,.achievement span{font-size:11px;font-weight:800;margin-top:auto;padding-top:15px;color:var(--accent-b)}
+.project-card>a{color:var(--accent-a);font-size:12px;font-weight:800;margin-top:8px;text-decoration:none;position:relative;z-index:1}
+.project-card>a:hover{text-decoration:underline}
+.project-card>span{padding-bottom:0}
+.eyebrow{color:var(--muted-2)}
+
+.achievement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+.link-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.link-panel>div{padding:24px}
+.link-panel strong{font-size:15px}
+.link-panel p{font-size:12px;color:var(--muted);line-height:1.5}
+.community-link{display:block;color:var(--accent-b);font-size:14px;font-weight:800;margin-top:12px;text-decoration:none;position:relative;z-index:1}
+.community-link:hover{text-decoration:underline}
+
+.contact{text-align:center}
+.contact>p{color:var(--muted)}
+.contact a{font-size:22px;color:transparent;background:var(--grad);-webkit-background-clip:text;background-clip:text;font-weight:800;text-decoration:none}
+
+footer{display:flex;justify-content:space-between;padding:26px 9vw;background:var(--bg2);border-top:1px solid var(--border);color:var(--muted-2);font:500 10px var(--mono);position:relative;z-index:1;transition:background .3s ease}
+
+/* =========================================================================
+   10. REDUCED MOTION + RESPONSIVE
+   ========================================================================= */
+@media(prefers-reduced-motion:reduce){
+  .orbit-sweep,.orbit-hub::before,.glow,.marquee,.dot,.gem-float,.orbit-ring,.orbit-dot{animation:none}
+  .reveal{transition:none;opacity:1;transform:none;filter:none}
+  html{scroll-behavior:auto}
+}
+
+@media(max-width:850px){.project-grid{grid-template-columns:repeat(2,1fr)}}
+
+@media(max-width:650px){
+  .nav-toggle{display:block}
+  nav{display:none}
+  .site-header{left:16px;right:16px;transform:none;width:auto}
+  nav.open{display:flex;flex-direction:column;gap:2px;position:fixed;top:70px;left:16px;right:16px;background:var(--bg);backdrop-filter:blur(20px);padding:14px 18px;border:1px solid var(--border);border-radius:18px;z-index:69}
+  nav.open a{padding:10px 0;border-bottom:1px solid var(--border)}
+  .hero{grid-template-columns:1fr;padding:130px 7vw 60px}
+  .orbital{display:none}
+  .gem-stage{top:14% !important;left:auto !important;right:16px !important;transform:scale(.55) !important}
+  .section,.contact{padding:70px 7vw}
+  .section-head{display:block}
+  .section-head>p{margin-top:14px}
+  .research-list,.project-grid,.achievement-grid,.link-panel{grid-template-columns:1fr}
+  .stats{gap:10px}
+  footer{padding:20px 7vw;display:block}
+  .cursor-dot,.cursor-ring,.trail-particle{display:none !important}
+}
+
+</style></head><body>
+
+<!-- scroll progress -->
+<div id="progressBar"></div>
+<a class="skip-link" href="#home">Skip to content</a>
+
+<!-- ============================================================
+     FOCUS / BLUR VEIL — camera-refocus layer, driven by scroll.js
+     ============================================================ -->
+<div class="scene-veil" id="sceneVeil" aria-hidden="true"></div>
+
+<!-- ============================================================
+     FIXED 3D CENTERPIECE — the "orbital gem". Stays anchored to
+     the viewport (not the page) while everything scrolls past it.
+     ============================================================ -->
+<div class="gem-stage" id="gemStage" aria-hidden="true">
+  <div class="gem-orbits">
+    <div class="orbit-ring r1"></div>
+    <div class="orbit-ring r2"></div>
+    <div class="orbit-dot d1"></div>
+    <div class="orbit-dot d2"></div>
+  </div>
+  <div class="gem-float">
+    <div class="gem-spin" id="gemSpin">
+      <div class="gem-prism" id="gemPrism">
+        <div class="facet top" style="--i:0"></div>
+        <div class="facet top" style="--i:1"></div>
+        <div class="facet top" style="--i:2"></div>
+        <div class="facet top" style="--i:3"></div>
+        <div class="facet bottom" style="--i:0"></div>
+        <div class="facet bottom" style="--i:1"></div>
+        <div class="facet bottom" style="--i:2"></div>
+        <div class="facet bottom" style="--i:3"></div>
+      </div>
+    </div>
+    <div class="gem-glow"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CUSTOM CURSOR — core dot + trailing aura ring (particles
+     spawned dynamically by script.js)
+     ============================================================ -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<header class="site-header" id="siteHeader"><a class="brand" href="#home">VS<span>.</span></a><button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Toggle navigation">☰</button><nav id="siteNav"><a href="#research">Research</a><a href="#projects">Projects</a><a href="#achievements">Achievements</a><a href="#community">Community</a></nav><a class="download" href="assets/overview.pdf" target="_blank">Overview PDF ↗</a></header>
+
+<main id="home">
+
+<section class="hero"><div class="glow d1" style="width:420px;height:420px;top:-140px;left:-100px"></div><div class="glow d2" style="width:380px;height:380px;top:60px;right:-120px"></div><div class="reveal"><p class="badge"><span class="dot"></span>Open to research collaborations</p><p class="eyebrow">Independent student researcher · India</p><h1>Viren<br><em>Singh.</em></h1><p class="lead">Student researcher and founder of Vaelon Aerospace, working across AI, algorithms, software systems, and aerospace computing. The faceted object drifting beside this text is the through-line — watch it as you scroll.</p><div class="actions"><a class="button primary" href="#research">View all work ↓</a><a class="button secondary" href="assets/overview.pdf" target="_blank">Download overview</a></div><div class="stats"><div><strong data-count="8">0</strong><span>Research papers</span></div><div><strong data-count="4">0</strong><span>Live projects</span></div><div><strong data-count="5">0</strong><span>Certifications</span></div></div></div><p class="hero-caption reveal">LIVE PORTFOLIO · <span>2026</span></p></section>
+
+<div class="marquee-wrap"><div class="marquee"><span>GRAPH NEURAL NETWORKS</span><span>PHYSICS-INFORMED ML</span><span>SATELLITE-BASED SCREENING</span><span>WILDFIRE PREDICTION</span><span>DISASTER ROUTING</span><span>ROCKET DIAGNOSTICS</span><span>TEMPORAL GRAPH REWIRING</span><span>GRAPH NEURAL NETWORKS</span><span>PHYSICS-INFORMED ML</span><span>SATELLITE-BASED SCREENING</span><span>WILDFIRE PREDICTION</span><span>DISASTER ROUTING</span><span>ROCKET DIAGNOSTICS</span><span>TEMPORAL GRAPH REWIRING</span></div></div>
+
+<section id="research" class="section"><div class="glow d1" style="width:340px;height:340px;top:-80px;right:-80px"></div><div class="section-head reveal"><div><p class="eyebrow">Research</p><h2>Research &amp; papers.</h2></div><p>Eight full papers and reports. Click any card to open the original document.</p></div><div class="research-list"><article class="research-item" data-href="assets/research/pfaspectra-v7.pdf"><small>01</small><div><h3>PFASpectra</h3><p>Satellite-based PFAS risk screening using explainable AI.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.20790767" target="_blank">DOI ↗</a><a href="https://virensingh011.github.io/PFASpectra/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/rocket-engine-fault-diagnosis.pdf"><small>02</small><div><h3>Rocket Engine Fault Diagnosis</h3><p>Interpretable attention-based reliability research for rocket engines.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.21339274" target="_blank">DOI ↗</a><a href="https://virensingh011.github.io/Rocket-Simulator-project/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/resqnet-v3.pdf"><small>03</small><div><h3>ResQNet</h3><p>Risk-aware graph optimization for emergency routing.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.20658065" target="_blank">DOI ↗</a><a href="https://virensingh011.github.io/ResQnet/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/fireshield-ai.pdf"><small>04</small><div><h3>FireShield AI</h3><p>Physics-informed graph learning for wildfire containment planning.</p><div class="quick"><a href="https://virensingh011.github.io/FireShield-AI/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/pfaspectra-v6.pdf"><small>05</small><div><h3>PFASpectra: Extended Report</h3><p>Earlier full research paper on satellite-based PFAS screening.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.20725862" target="_blank">DOI ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/resqnet-report.pdf"><small>06</small><div><h3>ResQNet Technical Report</h3><p>System design and implementation report for the emergency-routing project.</p></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/resqnet-best-report.pdf"><small>07</small><div><h3>ResQNet Research Report</h3><p>Additional full report on risk-aware optimization in disaster environments.</p></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/pgtr-wildfire.pdf"><small>08</small><div><h3>PGTR</h3><p>Physics-guided temporal graph rewiring for dynamic contagion forecasting, applied to wildfire damage prediction.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.21536980" target="_blank">DOI ↗</a></div></div><span>PDF ↗</span></article></div></section>
+
+<section id="projects" class="section"><div class="glow d2" style="width:320px;height:320px;bottom:-100px;left:-80px"></div><div class="section-head reveal"><div><p class="eyebrow">Projects</p><h2>Explore the work.</h2></div><p>Click a card for its report, or visit the live build.</p></div><div class="project-grid"><article class="project-card" data-href="assets/projects/resqnet-project-report.pdf"><p class="eyebrow">Emergency systems</p><h3>ResQNet</h3><p>Safer route planning for disaster conditions.</p><span>Open report ↗</span><a href="https://virensingh011.github.io/ResQnet/" target="_blank">Live demo ↗</a></article><article class="project-card" data-href="assets/projects/nexusml-project-report.pdf"><p class="eyebrow">Artificial intelligence</p><h3>NexusML</h3><p>Urban-disaster risk prediction engine.</p><span>Open report ↗</span><a href="https://virensingh011.github.io/NexusML/" target="_blank">Live demo ↗</a></article><article class="project-card" data-href="assets/projects/aegis-atlas-report.pdf"><p class="eyebrow">Computational intelligence</p><h3>Aegis-Atlas</h3><p>Scientific simulations and interactive STEM exploration.</p><span>Open report ↗</span><a href="https://virensingh011.github.io/Aegis-Atlas/" target="_blank">Live demo ↗</a></article><article class="project-card" data-href="assets/research/fireshield-ai.pdf"><p class="eyebrow">Decision support</p><h3>FireShield AI</h3><p>Wildfire containment planning with graph learning.</p><span>Open paper ↗</span><a href="https://virensingh011.github.io/FireShield-AI/" target="_blank">Live demo ↗</a></article></div></section>
+
+<section id="achievements" class="section"><div class="glow d1" style="width:320px;height:320px;top:-70px;left:38%"></div><div class="section-head reveal"><div><p class="eyebrow">Achievements</p><h2>Key evidence.</h2></div><p>Important qualifications, immediately verifiable.</p></div><div class="achievement-grid"><article class="achievement" data-href="assets/certificates/ioqm-qualification.pdf"><p class="eyebrow">Mathematics</p><h3>IOQM Qualification</h3><p>Qualified in India's national mathematical olympiad selection process.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/ncc-catc-114.pdf"><p class="eyebrow">Leadership</p><h3>National Cadet Corps</h3><p>Training in discipline, teamwork, and field leadership.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/ncc-a-certificate.pdf"><p class="eyebrow">Leadership</p><h3>NCC Certificate &lsquo;A&rsquo;</h3><p>Passed the NCC &lsquo;A&rsquo; Certificate examination under the Ministry of Defence, Government of India.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/machine-learning-specialization.pdf"><p class="eyebrow">Machine learning</p><h3>Stanford &amp; DeepLearning.AI</h3><p>Machine Learning Specialization certificate.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/vivo-ignite-finalist.pdf"><p class="eyebrow">Innovation</p><h3>Finalist in Vivo Ignite - Certificate</h3><p>Top 200 nationwide for PFASpectra, vivo Ignite Technology &amp; Innovation Initiative, 3rd edition.</p><span>Open certificate ↗</span></article></div></section>
+
+<section id="community" class="section"><div class="glow d2" style="width:300px;height:300px;bottom:-90px;right:0"></div><div class="section-head reveal"><div><p class="eyebrow">Community</p><h2>Building in public.</h2></div><p>Follow the communities behind the projects.</p></div><div class="link-panel"><div><strong>Vaelon Space</strong><p>Community and aerospace initiative founded by Viren Singh.</p><a class="community-link" href="https://www.instagram.com/vaelon.space/" target="_blank">Instagram: @vaelon.space ↗</a></div><div><strong>ResQNet</strong><p>Updates from the emergency-routing project community.</p><a class="community-link" href="https://www.instagram.com/resqnet.git/" target="_blank">Instagram: @resqnet.git ↗</a></div><div><strong>Research profile</strong><p>ORCID record and research identification.</p><a class="community-link" href="https://orcid.org/0009-0001-6618-0126" target="_blank">ORCID: 0009-0001-6618-0126 ↗</a></div></div></section>
+
+<section class="contact"><div class="glow d1" style="width:360px;height:360px;top:-100px;left:50%;transform:translateX(-50%)"></div><p class="eyebrow">Contact</p><h2>Let's connect.</h2><a href="mailto:thakurvirensingh1@gmail.com">thakurvirensingh1@gmail.com ↗</a></section>
+
+</main>
+<footer><p>© 2026 Viren Singh</p><p>Independent research · Vaelon Aerospace</p></footer>
+
+<script>
+/* =========================================================================
+   VIREN SINGH — PORTFOLIO · ANIMATION ENGINE
+   Pure vanilla JS, no dependencies. Organized into clearly labeled
+   sections. Everything scroll-driven runs off a single rAF loop so we
+   never do more than one layout read + one set of style writes per frame.
+   ========================================================================= */
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isFinePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+const root = document.documentElement;
+
+/* =========================================================================
+   0. SHARED SCROLL STATE
+   One scroll listener feeds every animation system below so we don't
+   stack multiple competing scroll handlers.
+   ========================================================================= */
+let scrollY = window.scrollY;
+let docProgress = 0; // 0 → 1 across the ENTIRE page height
+let ticking = false;
+
+function measure(){
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  docProgress = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+}
+
+function frame(){
+  measure();
+  updateColorSystem(docProgress);
+  updateVeil(docProgress);
+  updateGem(docProgress);
+  updateHeaderAndProgress(docProgress);
+  ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+  scrollY = window.scrollY;
+  if(!ticking){ requestAnimationFrame(frame); ticking = true; }
+}, { passive:true });
+
+
+/* =========================================================================
+   1. SCROLL COLOR SYSTEM
+   The entire page — background, ink, muted text, glass panels, borders,
+   accent gradient — is one continuous cinematic gradient across scroll
+   progress. Instead of "dark sections" vs "light sections", the whole
+   document is a single journey from warm cream daylight into a
+   near-black, gold/cyan-lit night. Colors are written as CSS custom
+   properties every frame, and every element in styles.css just reads
+   var(--bg), var(--ink), etc — so nothing needs per-section classes.
+   ========================================================================= */
+const COLOR_STOPS = [
+  { p:0.00, bg:'#faf8f3', bg2:'#f2efe7', ink:'#0c0c0c', muted:'#5a5850', muted2:'#8b8878', glassA:0.045, glassBase:'10,10,8', accentA:'#0c0c0c', accentB:'#8a6a2f' },
+  { p:0.32, bg:'#efeadf', bg2:'#e6dfd0', ink:'#111111', muted:'#54514a', muted2:'#847e6d', glassA:0.06,  glassBase:'10,10,8', accentA:'#22190b', accentB:'#b98a3a' },
+  { p:0.55, bg:'#3c362c', bg2:'#2c271f', ink:'#f6f3ea', muted:'#c8c0ac', muted2:'#9a917c', glassA:0.07,  glassBase:'255,255,255', accentA:'#d8ac5e', accentB:'#5eead4' },
+  { p:0.78, bg:'#0e0e11', bg2:'#0a0a0c', ink:'#f6f4ef', muted:'#a3a19a', muted2:'#767469', glassA:0.06,  glassBase:'255,255,255', accentA:'#5eead4', accentB:'#d8ac5e' },
+  { p:1.00, bg:'#040405', bg2:'#000000', ink:'#f6f4ef', muted:'#8f8d86', muted2:'#5f5d57', glassA:0.055, glassBase:'255,255,255', accentA:'#d8ac5e', accentB:'#5eead4' },
+];
+
+function hexToRgb(hex){
+  const n = parseInt(hex.replace('#',''),16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+function rgbToHex(r,g,b){
+  return '#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+}
+function lerp(a,b,t){ return a+(b-a)*t; }
+function lerpHex(h1,h2,t){
+  const a = hexToRgb(h1), b = hexToRgb(h2);
+  return rgbToHex(lerp(a[0],b[0],t), lerp(a[1],b[1],t), lerp(a[2],b[2],t));
+}
+
+function updateColorSystem(p){
+  // find the two stops p falls between
+  let i = 0;
+  while(i < COLOR_STOPS.length-2 && p > COLOR_STOPS[i+1].p) i++;
+  const s1 = COLOR_STOPS[i], s2 = COLOR_STOPS[i+1];
+  const span = s2.p - s1.p || 1;
+  const t = Math.min(1, Math.max(0, (p - s1.p) / span));
+
+  const bg = lerpHex(s1.bg, s2.bg, t);
+  const bg2 = lerpHex(s1.bg2, s2.bg2, t);
+  const ink = lerpHex(s1.ink, s2.ink, t);
+  const muted = lerpHex(s1.muted, s2.muted, t);
+  const muted2 = lerpHex(s1.muted2, s2.muted2, t);
+  const accentA = lerpHex(s1.accentA, s2.accentA, t);
+  const accentB = lerpHex(s1.accentB, s2.accentB, t);
+  const glassA = lerp(s1.glassA, s2.glassA, t);
+  const glassBase = t < 0.5 ? s1.glassBase : s2.glassBase; // swap glass tint light/dark at midpoint
+
+  const st = root.style;
+  st.setProperty('--bg', bg);
+  st.setProperty('--bg2', bg2);
+  st.setProperty('--ink', ink);
+  st.setProperty('--muted', muted);
+  st.setProperty('--muted-2', muted2);
+  st.setProperty('--accent-a', accentA);
+  st.setProperty('--accent-b', accentB);
+  st.setProperty('--glass', `rgba(${glassBase},${glassA})`);
+  st.setProperty('--glass-hover', `rgba(${glassBase},${glassA*1.9})`);
+  st.setProperty('--border', `rgba(${glassBase},${glassA*2.6})`);
+  st.setProperty('--border-hover', `rgba(${glassBase},${glassA*5.2})`);
+}
+
+
+/* =========================================================================
+   2. FOCUS / BLUR VEIL
+   A soft "camera racking focus" pass: blur + darkness intensify as we
+   move through the mid-scroll transition zone (dusk → night), then
+   clear again once we've settled into the dark, content-heavy sections.
+   ========================================================================= */
+function bell(x, center, width){
+  const d = (x - center) / width;
+  return Math.max(0, 1 - d*d);
+}
+function updateVeil(p){
+  if(reduceMotion){ return; }
+  const intensity = bell(p, 0.50, 0.09); // narrower window, much lower ceiling than before
+  root.style.setProperty('--veil-blur', (intensity*3.5).toFixed(2)+'px');
+  root.style.setProperty('--veil-opacity', (intensity*0.08).toFixed(3));
+}
+
+
+/* =========================================================================
+   3. THE GEM — fixed 3D centerpiece
+   Two motion layers:
+     a) SCROLL-DRIVEN — continuous Y-rotation tied to scroll position,
+        a scale/position shift from "centered hero object" toward a
+        smaller "living badge" anchored near the top-right once you've
+        scrolled past the intro, and a gentle X-tilt.
+     b) POINTER-DRIVEN — an additive rotation offset so the gem visibly
+        "looks toward" the cursor/drag position (section 5 wires this).
+   ========================================================================= */
+const gemStage = document.getElementById('gemStage');
+const gemSpin = document.getElementById('gemSpin');
+
+let pointerTiltX = 0, pointerTiltY = 0; // set by cursor system, degrees
+let dragTwist = 0; // extra facet twist from wheel/drag energy, decays each frame
+
+function updateGem(p){
+  if(!gemStage) return;
+
+  // --- stage position: center (hero) → small badge, top-right corner
+  const settleT = Math.min(1, p / 0.30); // fully "settled" by 30% scroll
+  const eased = settleT*settleT*(3-2*settleT); // smoothstep
+  const vw = window.innerWidth, vh = window.innerHeight;
+  // on wide screens the hero text is left-aligned, so rest the gem in the
+  // open whitespace to the right rather than dead-center over the copy
+  const cx = vw > 900 ? vw*0.74 : vw/2;
+  const cy = vh/2;
+  const tx = lerp(cx, vw-96, eased);
+  const ty = lerp(cy, 96, eased);
+  const scale = lerp(1, 0.34, eased);
+  const stageOpacity = lerp(1, 0.85, eased);
+
+  gemStage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  gemStage.style.opacity = stageOpacity;
+
+  // --- spin: continuous rotation tied to scroll (the "cinematic" turn)
+  const scrollSpin = p * 900; // degrees over full document
+  const tiltBase = lerp(-8, 22, eased); // leans back slightly as it recedes
+  const rx = tiltBase + pointerTiltY;
+  const ry = scrollSpin + pointerTiltX + dragTwist;
+
+  gemSpin.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+
+  // decay the drag twist so flicks settle back to the scroll-driven spin
+  dragTwist *= 0.94;
+}
+
+
+/* =========================================================================
+   4. HEADER SHADOW, SCROLL PROGRESS BAR, ACTIVE NAV LINK
+   ========================================================================= */
+const header = document.getElementById('siteHeader');
+const progressBar = document.getElementById('progressBar');
+const siteNav = document.getElementById('siteNav');
+const sections = [...document.querySelectorAll('main section[id]')];
+const navLinks = [...siteNav.querySelectorAll('a')];
+
+function updateHeaderAndProgress(p){
+  header.classList.toggle('scrolled', scrollY > 8);
+  progressBar.style.width = (p*100)+'%';
+  let current = null;
+  sections.forEach(s => { if(scrollY+90 >= s.offsetTop) current = s.id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+current));
+}
+
+const navToggle = document.getElementById('navToggle');
+navToggle.addEventListener('click', () => {
+  const open = siteNav.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open ? 'true':'false');
+});
+siteNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  siteNav.classList.remove('open'); navToggle.setAttribute('aria-expanded','false');
+}));
+
+
+/* =========================================================================
+   5. CUSTOM CURSOR SYSTEM
+   Core dot (snappy) + trailing aura ring (lags behind, lerped each
+   frame) + spawned particle trail. Magnetic pull on interactive
+   elements: the element itself nudges toward the cursor, and the
+   cursor ring grows/tints to "swallow" it.
+   ========================================================================= */
+if(isFinePointer && !reduceMotion){
+  root.classList.add('has-custom-cursor');
+
+  const cursorDot = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+
+  let mouseX = innerWidth/2, mouseY = innerHeight/2;
+  let ringX = mouseX, ringY = mouseY;
+
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+    maybeSpawnParticle(mouseX, mouseY);
+    driveGemTowardCursor(mouseX, mouseY);
+  }, { passive:true });
+
+  // ring lags behind the dot for a soft "aura" trailing feel
+  function ringLoop(){
+    ringX = lerp(ringX, mouseX, 0.16);
+    ringY = lerp(ringY, mouseY, 0.16);
+    cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(ringLoop);
+  }
+  requestAnimationFrame(ringLoop);
+
+  // --- particle trail: small dots spawned on movement, fade + float out
+  let lastSpawn = 0;
+  function maybeSpawnParticle(x,y){
+    const now = performance.now();
+    if(now - lastSpawn < 40) return; // throttle
+    lastSpawn = now;
+    const p = document.createElement('span');
+    p.className = 'trail-particle';
+    p.style.left = x+'px';
+    p.style.top = y+'px';
+    document.body.appendChild(p);
+    const angle = Math.random()*Math.PI*2;
+    const dist = 14 + Math.random()*18;
+    const dx = Math.cos(angle)*dist, dy = Math.sin(angle)*dist;
+    p.animate([
+      { transform:'translate(-50%,-50%) scale(1)', opacity:.8 },
+      { transform:`translate(${dx-2}px, ${dy-2}px) scale(0)`, opacity:0 }
+    ], { duration:650, easing:'cubic-bezier(.16,.84,.32,1)' }).onfinish = () => p.remove();
+  }
+
+  // --- magnetic elements: buttons, nav links, cards pull toward cursor
+  const magnets = document.querySelectorAll('.button, .download, nav a, .community-link');
+  magnets.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursorRing.classList.add('magnetic');
+      cursorDot.style.opacity = '0';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursorRing.classList.remove('magnetic');
+      cursorDot.style.opacity = '1';
+      el.style.transform = '';
+    });
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const mx = (e.clientX - r.left - r.width/2) * 0.35;
+      const my = (e.clientY - r.top - r.height/2) * 0.35;
+      el.style.transform = `translate(${mx}px, ${my}px)`;
+    });
+  });
+
+  // text cursor state on headings/paragraphs (thin bar instead of ring)
+  document.querySelectorAll('h1, h2, h3, p').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('text'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('text'));
+  });
+
+  // --- gem reacts when the cursor passes near it (only while centered/large)
+  function driveGemTowardCursor(x,y){
+    const r = gemStage.getBoundingClientRect();
+    const gx = r.left + r.width/2, gy = r.top + r.height/2;
+    const dist = Math.hypot(x-gx, y-gy);
+    const radius = 420;
+    if(dist < radius){
+      const strength = (1 - dist/radius);
+      pointerTiltX = ((x-gx)/radius) * 26 * strength;
+      pointerTiltY = ((y-gy)/radius) * -18 * strength;
+    } else {
+      pointerTiltX = lerp(pointerTiltX, 0, 0.06);
+      pointerTiltY = lerp(pointerTiltY, 0, 0.06);
+    }
+  }
+} else {
+  // touch / coarse-pointer devices: no custom cursor, no magnetism
+  document.getElementById('cursorDot')?.remove();
+  document.getElementById('cursorRing')?.remove();
+}
+
+/* wheel "drag" energy — flicking the wheel fast gives the gem an extra
+   twist that decays back into the normal scroll spin (section 3 reads
+   dragTwist each frame) */
+window.addEventListener('wheel', e => {
+  dragTwist += Math.max(-40, Math.min(40, e.deltaY * 0.15));
+}, { passive:true });
+
+
+/* =========================================================================
+   6. CARD TILT + SHINE (pointer-fine devices only)
+   3D tilt based on pointer position inside the card, plus a radial
+   highlight (--mx/--my custom props, read by the ::before shine layer
+   in styles.css).
+   ========================================================================= */
+if(isFinePointer && !reduceMotion){
+  document.querySelectorAll('.research-item, .project-card, .achievement, .link-panel > div').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width, py = (e.clientY - r.top)/r.height;
+      const rx = (0.5 - py) * 10, ry = (px - 0.5) * 10;
+      card.style.transform = `perspective(700px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-4px) scale(1.015)`;
+      card.style.setProperty('--mx', (px*100)+'%');
+      card.style.setProperty('--my', (py*100)+'%');
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+}
+
+
+/* =========================================================================
+   7. SCROLL REVEAL (IntersectionObserver) + STAGGERED GRID CHILDREN
+   ========================================================================= */
+document.querySelectorAll('.research-list, .project-grid, .achievement-grid, .link-panel').forEach(grid => {
+  [...grid.children].forEach((el,i) => { el.classList.add('reveal'); el.style.setProperty('--d',(i*70)+'ms'); });
+});
+
+if('IntersectionObserver' in window){
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in-view'); io.unobserve(en.target); } });
+  }, { threshold:.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+}
+
+
+/* =========================================================================
+   8. COUNT-UP STATS
+   ========================================================================= */
+const counters = document.querySelectorAll('[data-count]');
+if(counters.length){
+  const cio = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(!en.isIntersecting) return;
+      const el = en.target, target = +el.dataset.count, dur = 900, start = performance.now();
+      if(reduceMotion){ el.textContent = target; cio.unobserve(el); return; }
+      const step = now => {
+        const p = Math.min((now-start)/dur, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1-p,3)));
+        if(p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      cio.unobserve(el);
+    });
+  }, { threshold:.6 });
+  counters.forEach(el => cio.observe(el));
+}
+
+
+/* =========================================================================
+   9. CLICKABLE CARDS + BUTTON RIPPLE
+   ========================================================================= */
+document.querySelectorAll('[data-href]').forEach(x => {
+  const open = () => window.open(x.dataset.href, '_blank', 'noopener');
+  x.tabIndex = 0; x.setAttribute('role','link');
+  const label = x.querySelector('h3'); if(label) x.setAttribute('aria-label', label.textContent+' — open document');
+  x.onclick = e => { if(!e.target.closest('a')) open(); };
+  x.onkeydown = e => { if(e.key === 'Enter') open(); };
+});
+
+document.querySelectorAll('.button, .download').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const r = btn.getBoundingClientRect();
+    const s = document.createElement('span');
+    s.className = 'ripple';
+    s.style.left = (e.clientX - r.left)+'px';
+    s.style.top = (e.clientY - r.top)+'px';
+    btn.appendChild(s);
+    s.addEventListener('animationend', () => s.remove());
+  });
+});
+
+
+/* =========================================================================
+   10. INITIAL PAINT
+   Run the color/gem/veil systems once immediately so the page isn't
+   unstyled-white for a frame before the first scroll event fires.
+   ========================================================================= */
+frame();
+window.addEventListener('resize', frame);
+
+</script>
+</body></html>
