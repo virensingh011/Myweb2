@@ -1,0 +1,157 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Viren Singh | Portfolio</title><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="alternate icon" href="assets/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root{--bg:#fff;--soft:#f6f7f8;--ink:#15181d;--muted:#555d68;--faint:#7b838e;--line:#e2e5e9;--line-2:#c4c9d0;--serif:"Fraunces",Georgia,serif;--sans:"Manrope",system-ui,Arial,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--ink);color:#fff}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+.skip-link{position:absolute;left:-999px;background:var(--ink);color:#fff;font-weight:700;font-size:13px;padding:10px 14px;z-index:80}
+.skip-link:focus{left:0;top:0}
+#progressBar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--ink);z-index:90}
+.site-header{position:sticky;top:0;z-index:70;display:flex;align-items:center;justify-content:space-between;gap:24px;height:68px;padding:0 max(24px,7vw);background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}
+.brand{font-weight:800;font-size:18px;letter-spacing:-.02em;text-decoration:none}
+nav{display:flex;gap:28px;margin-left:auto}
+nav a{font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 0;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+nav a:hover,nav a.active{color:var(--ink);border-bottom-color:var(--ink)}
+.download{font-size:13px;font-weight:700;text-decoration:none;padding:9px 18px;border-radius:8px;background:var(--ink);color:#fff;transition:opacity .15s}
+.download:hover{opacity:.85}
+.nav-toggle{display:none;background:none;border:1px solid var(--line-2);border-radius:8px;width:40px;height:40px;font-size:16px;color:var(--ink)}
+.hero{position:relative;padding:112px max(24px,calc((100vw - 1240px)/2 + 7vw)) 96px;background:linear-gradient(90deg,rgba(7,12,16,.88) 0%,rgba(7,12,16,.66) 50%,rgba(7,12,16,.4) 100%),url(assets/hero-bg.jpg) center/cover no-repeat #0b1318;color:#fff}.hero h1,.hero h3{color:#fff}.hero .lead{color:rgba(255,255,255,.82)}.hero .badge{color:rgba(255,255,255,.88);border-color:rgba(255,255,255,.3)}.hero .primary{background:#fff;color:var(--ink)}.hero .secondary{color:#fff;border-color:rgba(255,255,255,.5)}.hero .secondary:hover{background:rgba(255,255,255,.12);border-color:#fff}.hero .stats{border-top-color:rgba(255,255,255,.25)}.hero .stats>div{border-right-color:rgba(255,255,255,.25)}.hero .stats span{color:rgba(255,255,255,.75)}
+.hero>.reveal{max-width:720px}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 14px;margin:0 0 28px}
+.dot{width:7px;height:7px;border-radius:50%;background:#2f9e5f}
+.eyebrow{font-size:13px;font-weight:600;color:var(--faint);margin:0 0 10px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--ink)}
+.hero h1{font-size:clamp(48px,7vw,88px);line-height:1.02;letter-spacing:-.03em;margin:0}
+.hero em{font-style:normal}
+.lead{max-width:600px;font-size:18px;line-height:1.7;color:var(--muted);margin:24px 0 0}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.button{font-size:14px;font-weight:700;text-decoration:none;padding:13px 24px;border-radius:8px;display:inline-block;transition:background .15s,border-color .15s,opacity .15s}
+.primary{background:var(--ink);color:#fff}
+.primary:hover{opacity:.85}
+.secondary{border:1px solid var(--line-2);color:var(--ink)}
+.secondary:hover{border-color:var(--ink);background:var(--soft)}
+.stats{display:flex;flex-wrap:wrap;gap:0;margin-top:56px;border-top:1px solid var(--line);padding-top:28px}
+.stats>div{padding-right:44px;margin-right:44px;border-right:1px solid var(--line)}
+.stats>div:last-child{border:0;margin:0;padding:0}
+.stats strong{display:block;font:500 40px/1 var(--serif);letter-spacing:-.02em}
+.stats span{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
+.hero-caption{display:none}
+.marquee-wrap{background:var(--soft);border-block:1px solid var(--line);padding:18px max(24px,7vw)}
+.marquee{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 32px;max-width:1240px;margin:0 auto}
+.marquee span{font-size:13px;font-weight:600;color:var(--muted)}
+.marquee span:nth-child(n+8){display:none}
+.section,.contact{padding:96px max(24px,7vw);max-width:1240px;margin:0 auto}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.section-head h2,.contact h2{font-size:clamp(32px,4vw,48px);line-height:1.1;letter-spacing:-.02em;margin:0}
+.section-head>p{max-width:300px;margin:0;font-size:14px;color:var(--muted)}
+.research-list{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.project-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.achievement-grid,.link-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.research-item,.project-card,.achievement,.link-panel>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px;transition:border-color .15s,box-shadow .15s}
+.research-item,.project-card,.achievement{cursor:pointer}
+.research-item:hover,.project-card:hover,.achievement:hover,.research-item:focus-visible,.project-card:focus-visible,.achievement:focus-visible{border-color:var(--ink);box-shadow:0 6px 20px rgba(21,24,29,.07)}
+.research-item{display:grid;grid-template-columns:28px 1fr;gap:12px;min-height:180px}
+.research-item small{font-size:13px;font-weight:700;color:var(--faint)}
+.research-item h3,.project-card h3,.achievement h3{font-size:21px;line-height:1.25;letter-spacing:-.01em;margin:0 0 10px}
+.research-item p,.project-card p:not(.eyebrow),.achievement p:not(.eyebrow){margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.project-card,.achievement{display:flex;flex-direction:column;min-height:210px}
+.project-card span,.achievement span,.research-item>span{font-size:13px;font-weight:700;margin-top:auto;padding-top:18px}
+.quick{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px}
+.quick a,.project-card>a,.community-link{font-size:13px;font-weight:700;text-decoration:none;border-bottom:1px solid var(--line-2)}
+.quick a:hover,.project-card>a:hover,.community-link:hover{border-color:var(--ink)}
+.project-card>a{align-self:flex-start;margin-top:8px}
+.link-panel strong{font-size:17px}
+.link-panel p{font-size:14px;color:var(--muted);margin:8px 0 14px}
+.community-link{display:inline-block}
+.contact{text-align:center;border-top:1px solid var(--line)}
+.contact a{display:inline-block;margin-top:16px;font-size:20px;font-weight:700;text-decoration:none;border-bottom:2px solid var(--ink)}
+footer{display:flex;justify-content:space-between;gap:16px;padding:28px max(24px,7vw);border-top:1px solid var(--line);background:var(--soft);font-size:13px;color:var(--muted)}
+footer p{margin:0}
+.current{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:20px;padding:28px 30px;border:1px solid var(--ink);border-radius:12px;background:var(--soft)}.current h3{font-size:26px;margin:0 0 8px}.current p:not(.eyebrow){margin:0;max-width:560px;font-size:15px;color:var(--muted)}.current-links{display:flex;gap:12px;flex-wrap:wrap}.foot-links{display:flex;gap:20px}.foot-links a{text-decoration:none;font-weight:600}.foot-links a:hover{color:var(--ink);text-decoration:underline}
+.current{position:relative;border:0;color:#fff;background:linear-gradient(90deg,rgba(6,10,14,.92) 0%,rgba(6,10,14,.7) 55%,rgba(6,10,14,.45) 100%),url(assets/research-planet.jpg) center 30%/cover no-repeat #080d11}.current h3{color:#fff}.current p:not(.eyebrow){color:rgba(255,255,255,.8)}.current .eyebrow{color:rgba(255,255,255,.6)}.current .primary{background:#fff;color:var(--ink)}.current .secondary{color:#fff;border-color:rgba(255,255,255,.5)}.current .secondary:hover{background:rgba(255,255,255,.12);border-color:#fff}.contact{position:relative;max-width:none;margin:0;border:0;min-height:520px;padding:96px max(24px,calc((100vw - 1240px)/2 + 7vw)) 200px;color:#fff;background:linear-gradient(180deg,#000 0,rgba(0,0,0,0) 45%),url(assets/contact-earth.jpg) center bottom/cover no-repeat #000}.contact h2{color:#fff}.contact .eyebrow{color:rgba(255,255,255,.65)}.contact a{color:#fff;border-bottom-color:#fff}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in-view{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
+@media(max-width:1000px){.project-grid{grid-template-columns:repeat(2,1fr)}.achievement-grid,.link-panel{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+.nav-toggle{display:block;margin-left:auto}
+.download{display:none}
+nav{display:none;margin:0}
+nav.open{display:flex;flex-direction:column;gap:0;position:absolute;top:68px;left:0;right:0;background:#fff;padding:8px 24px 16px;border-bottom:1px solid var(--line)}
+nav.open a{padding:14px 0;border-bottom:1px solid var(--line)}
+.contact{padding:72px 24px 160px;min-height:460px}.hero{padding:72px 24px 64px;background-position:62% center}
+.lead{font-size:16px}
+.stats>div{padding-right:22px;margin-right:22px}
+.stats strong{font-size:32px}
+.section,.contact{padding:64px 24px}
+.section-head{display:block}
+.section-head>p{margin-top:12px;max-width:none}
+.research-list,.project-grid,.achievement-grid,.link-panel{grid-template-columns:1fr}
+footer{flex-direction:column}
+}
+</style></head><body>
+
+<!-- scroll progress -->
+<div id="progressBar"></div>
+<a class="skip-link" href="#home">Skip to content</a>
+
+<header class="site-header" id="siteHeader"><a class="brand" href="#home">VS<span>.</span></a><button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Toggle navigation">☰</button><nav id="siteNav"><a href="#research">Research</a><a href="#projects">Projects</a><a href="#achievements">Achievements</a><a href="#profiles">Profiles</a><a href="#community">Community</a></nav><a class="download" href="assets/overview.pdf" target="_blank">Overview PDF ↗</a></header>
+
+<main id="home">
+
+<section class="hero"><div class="reveal"><p class="badge"><span class="dot"></span>Open to research collaborations</p><p class="eyebrow">Independent student researcher · India</p><h1>Viren<br><em>Singh.</em></h1><p class="lead">Student researcher and founder of Vaelon Aerospace, working across AI, algorithms, software systems, and aerospace computing. The faceted object drifting beside this text is the through-line — watch it as you scroll.</p><div class="actions"><a class="button primary" href="#research">View all work ↓</a><a class="button secondary" href="assets/overview.pdf" target="_blank">Download overview</a></div><div class="stats"><div><strong data-count="8">0</strong><span>Research papers</span></div><div><strong data-count="4">0</strong><span>Live projects</span></div><div><strong data-count="6">0</strong><span>Certifications</span></div></div></div><p class="hero-caption reveal">LIVE PORTFOLIO · <span>2026</span></p></section>
+
+<div class="marquee-wrap"><div class="marquee"><span>Graph Neural Networks</span><span>Physics-informed ML</span><span>Satellite-Based Screening</span><span>Wildfire Prediction</span><span>Disaster Routing</span><span>Rocket Diagnostics</span><span>Temporal Graph Rewiring</span><span>Graph Neural Networks</span><span>Physics-informed ML</span><span>Satellite-Based Screening</span><span>Wildfire Prediction</span><span>Disaster Routing</span><span>Rocket Diagnostics</span><span>Temporal Graph Rewiring</span></div></div>
+
+<section id="research" class="section"><div class="section-head reveal"><div><p class="eyebrow">Research</p><h2>Research &amp; papers.</h2></div><p>Eight full papers and reports. Click any card to open the original document.</p></div><div class="current reveal"><div><p class="eyebrow">Current research</p><h3>RASE-Fire</h3><p>My latest work: reliability-aware multimodal wildfire forecasting. Code and project files are on GitHub. For the most recent updates, check my LinkedIn posts.</p></div><div class="current-links"><a class="button primary" href="https://github.com/virensingh011/RASE-Fire" target="_blank" rel="noopener">View on GitHub ↗</a><a class="button secondary" href="https://www.linkedin.com/in/thakurvirensingh/" target="_blank" rel="noopener">Latest on LinkedIn ↗</a></div></div><div class="research-list"><article class="research-item" data-href="assets/research/pfaspectra-v7.pdf"><small>01</small><div><h3>PFASpectra</h3><p>Satellite-based PFAS risk screening using explainable AI.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.20790767" target="_blank">DOI ↗</a><a href="https://virensingh011.github.io/PFASpectra/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/rocket-engine-fault-diagnosis.pdf"><small>02</small><div><h3>Rocket Engine Fault Diagnosis</h3><p>Interpretable attention-based reliability research for rocket engines.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.21339274" target="_blank">DOI ↗</a><a href="https://virensingh011.github.io/Rocket-Simulator-project/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/resqnet-v3.pdf"><small>03</small><div><h3>ResQNet</h3><p>Risk-aware graph optimization for emergency routing.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.20658065" target="_blank">DOI ↗</a><a href="https://virensingh011.github.io/ResQnet/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/fireshield-ai.pdf"><small>04</small><div><h3>FireShield AI</h3><p>Physics-informed graph learning for wildfire containment planning.</p><div class="quick"><a href="https://virensingh011.github.io/FireShield-AI/" target="_blank">Live demo ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/pfaspectra-v6.pdf"><small>05</small><div><h3>PFASpectra: Extended Report</h3><p>Earlier full research paper on satellite-based PFAS screening.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.20725862" target="_blank">DOI ↗</a></div></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/resqnet-report.pdf"><small>06</small><div><h3>ResQNet Technical Report</h3><p>System design and implementation report for the emergency-routing project.</p></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/resqnet-best-report.pdf"><small>07</small><div><h3>ResQNet Research Report</h3><p>Additional full report on risk-aware optimization in disaster environments.</p></div><span>PDF ↗</span></article><article class="research-item" data-href="assets/research/pgtr-wildfire.pdf"><small>08</small><div><h3>PGTR</h3><p>Physics-guided temporal graph rewiring for dynamic contagion forecasting, applied to wildfire damage prediction.</p><div class="quick"><a href="https://doi.org/10.5281/zenodo.21536980" target="_blank">DOI ↗</a></div></div><span>PDF ↗</span></article></div></section>
+
+<section id="projects" class="section"><div class="section-head reveal"><div><p class="eyebrow">Projects</p><h2>Explore the work.</h2></div><p>Click a card for its report, or visit the live build.</p></div><div class="project-grid"><article class="project-card" data-href="assets/projects/resqnet-project-report.pdf"><p class="eyebrow">Emergency systems</p><h3>ResQNet</h3><p>Safer route planning for disaster conditions.</p><span>Open report ↗</span><a href="https://virensingh011.github.io/ResQnet/" target="_blank">Live demo ↗</a></article><article class="project-card" data-href="assets/projects/nexusml-project-report.pdf"><p class="eyebrow">Artificial intelligence</p><h3>NexusML</h3><p>Urban-disaster risk prediction engine.</p><span>Open report ↗</span><a href="https://virensingh011.github.io/NexusML/" target="_blank">Live demo ↗</a></article><article class="project-card" data-href="assets/projects/aegis-atlas-report.pdf"><p class="eyebrow">Computational intelligence</p><h3>Aegis-Atlas</h3><p>Scientific simulations and interactive STEM exploration.</p><span>Open report ↗</span><a href="https://virensingh011.github.io/Aegis-Atlas/" target="_blank">Live demo ↗</a></article><article class="project-card" data-href="assets/research/fireshield-ai.pdf"><p class="eyebrow">Decision support</p><h3>FireShield AI</h3><p>Wildfire containment planning with graph learning.</p><span>Open paper ↗</span><a href="https://virensingh011.github.io/FireShield-AI/" target="_blank">Live demo ↗</a></article></div></section>
+
+<section id="achievements" class="section"><div class="section-head reveal"><div><p class="eyebrow">Achievements</p><h2>Key evidence.</h2></div><p>Important qualifications, immediately verifiable.</p></div><div class="achievement-grid"><article class="achievement" data-href="assets/certificates/ioqm-qualification.pdf"><p class="eyebrow">Mathematics</p><h3>IOQM Qualification</h3><p>Qualified in India's national mathematical olympiad selection process.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/ncc-catc-114.pdf"><p class="eyebrow">Leadership</p><h3>National Cadet Corps</h3><p>Training in discipline, teamwork, and field leadership.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/ncc-a-certificate.pdf"><p class="eyebrow">Leadership</p><h3>NCC Certificate &lsquo;A&rsquo;</h3><p>Passed the NCC &lsquo;A&rsquo; Certificate examination under the Ministry of Defence, Government of India.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/machine-learning-specialization.pdf"><p class="eyebrow">Machine learning</p><h3>Stanford &amp; DeepLearning.AI</h3><p>Machine Learning Specialization certificate.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/pgm-representation.pdf"><p class="eyebrow">Probabilistic AI</p><h3>Stanford Online &amp; Coursera</h3><p>Probabilistic Graphical Models 1: Representation, taught by Daphne Koller. Completed October 2026.</p><span>Open certificate ↗</span></article><article class="achievement" data-href="assets/certificates/vivo-ignite-finalist.pdf"><p class="eyebrow">Innovation</p><h3>Finalist in Vivo Ignite - Certificate</h3><p>Top 200 nationwide for PFASpectra, vivo Ignite Technology &amp; Innovation Initiative, 3rd edition.</p><span>Open certificate ↗</span></article></div></section>
+
+<section id="profiles" class="section"><div class="section-head reveal"><div><p class="eyebrow">Profiles</p><h2>Find me online.</h2></div><p>My public profiles. LinkedIn has the most recent updates.</p></div><div class="link-panel"><div><strong>LinkedIn</strong><p>Professional profile and my latest posts on new research and projects.</p><a class="community-link" href="https://www.linkedin.com/in/thakurvirensingh/" target="_blank" rel="noopener">linkedin.com/in/thakurvirensingh ↗</a></div><div><strong>GitHub</strong><p>Source code for my projects, including RASE-Fire.</p><a class="community-link" href="https://github.com/virensingh011" target="_blank" rel="noopener">github.com/virensingh011 ↗</a></div><div><strong>Zenodo</strong><p>My published papers, reports and datasets with DOIs.</p><a class="community-link" href="https://zenodo.org/search?q=metadata.creators.person_or_org.name%3A%22Singh%2C%20Viren%22&amp;l=list&amp;p=1&amp;s=10&amp;sort=bestmatch" target="_blank" rel="noopener">View all publications on Zenodo ↗</a></div></div></section>
+
+<section id="community" class="section"><div class="section-head reveal"><div><p class="eyebrow">Community</p><h2>Building in public.</h2></div><p>Follow the communities behind the projects.</p></div><div class="link-panel"><div><strong>Vaelon Space</strong><p>Community and aerospace initiative founded by Viren Singh.</p><a class="community-link" href="https://www.instagram.com/vaelon.space/" target="_blank">Instagram: @vaelon.space ↗</a></div><div><strong>ResQNet</strong><p>Updates from the emergency-routing project community.</p><a class="community-link" href="https://www.instagram.com/resqnet.git/" target="_blank">Instagram: @resqnet.git ↗</a></div><div><strong>Research profile</strong><p>ORCID record and research identification.</p><a class="community-link" href="https://orcid.org/0009-0001-6618-0126" target="_blank">ORCID: 0009-0001-6618-0126 ↗</a></div></div></section>
+
+<section class="contact"><p class="eyebrow">Contact</p><h2>Let's connect.</h2><a href="mailto:thakurvirensingh1@gmail.com">thakurvirensingh1@gmail.com ↗</a></section>
+
+</main>
+<footer><p>© 2026 Viren Singh</p><p class="foot-links"><a href="https://www.linkedin.com/in/thakurvirensingh/" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/virensingh011" target="_blank" rel="noopener">GitHub</a><a href="https://zenodo.org/search?q=metadata.creators.person_or_org.name%3A%22Singh%2C%20Viren%22&amp;l=list&amp;p=1&amp;s=10&amp;sort=bestmatch" target="_blank" rel="noopener">Zenodo</a></p><p>Independent research · Vaelon Aerospace</p></footer>
+
+<script>
+const bar=document.getElementById('progressBar'),nav=document.getElementById('siteNav'),tog=document.getElementById('navToggle');
+const secs=[...document.querySelectorAll('main section[id]')],links=[...nav.querySelectorAll('a')];
+let tick=false;
+function onScroll(){
+  const h=document.documentElement,max=h.scrollHeight-h.clientHeight,y=window.scrollY;
+  bar.style.width=(max>0?y/max*100:0)+'%';
+  let cur=null;secs.forEach(s=>{if(y+100>=s.offsetTop)cur=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  tick=false;
+}
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(onScroll)}},{passive:true});
+onScroll();
+tog.addEventListener('click',()=>{const o=nav.classList.toggle('open');tog.setAttribute('aria-expanded',o)});
+links.forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');tog.setAttribute('aria-expanded','false')}));
+document.querySelectorAll('.research-list,.project-grid,.achievement-grid,.link-panel').forEach(g=>[...g.children].forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=(i%4*50)+'ms'}));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;const el=e.target,t=+el.dataset.count,s=performance.now();cio.unobserve(el);
+  if(reduce){el.textContent=t;return}
+  const step=n=>{const p=Math.min((n-s)/800,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};
+  requestAnimationFrame(step);
+}),{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+document.querySelectorAll('[data-href]').forEach(x=>{
+  const open=()=>window.open(x.dataset.href,'_blank','noopener');
+  x.tabIndex=0;x.setAttribute('role','link');
+  const l=x.querySelector('h3');if(l)x.setAttribute('aria-label',l.textContent+' — open document');
+  x.onclick=e=>{if(!e.target.closest('a'))open()};
+  x.onkeydown=e=>{if(e.key==='Enter')open()};
+});
+</script>
+</body></html>
